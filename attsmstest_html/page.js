@@ -5,7 +5,7 @@ $(function() {
     // Read current data and rebuild UI.
     // If you plan to generate complex UIs like this, consider using a JavaScript templating library.
     function refreshTodoItems() {
-        var query = todoItemTable.where({ complete: false });
+        var query = todoItemTable.where({ complete: false }).orderByDescending('id');
 
         query.read().then(function(todoItems) {
             var listItems = $.map(todoItems, function(item) {
@@ -34,8 +34,9 @@ $(function() {
     $('#add-item').submit(function(evt) {
         var textbox = $('#new-item-text'),
             itemText = textbox.val();
+		var googleSenderId = 'APA91bE96GpDUdSD-NxGWGIa_R874TKExoHNJunUkX7gdYk6vnvmMriLpsp2ZciLB3sDV0rOMtzeOu2Rn1JtvJbs_0lCrXPBwp-wBinKQCujw8Vq4EuN6ZY21qOiMenCXAn160_-UuD51dtGAHpDIIYZ6TYl6XAcZdMVA9VwJC6JpzcTKbJ5ikM'; // sm095n added for GCM	
         if (itemText !== '') {
-            todoItemTable.insert({ text: itemText, complete: false }).then(refreshTodoItems, handleError);
+            todoItemTable.insert({ text: itemText, complete: false, channel: googleSenderId }).then(refreshTodoItems, handleError);
         }
         textbox.val('').focus();
         evt.preventDefault();
